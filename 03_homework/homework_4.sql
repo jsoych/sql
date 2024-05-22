@@ -16,8 +16,9 @@ HINT: keep the syntax the same, but edited the correct components with the strin
 The `||` values concatenate the columns into strings. 
 Edit the appropriate columns -- you're making two edits -- and the NULL rows will be fixed. 
 All the other rows will remain the same.) */
-
-
+SELECT 
+product_name || ', ' ||coalesce(product_size,'')|| ' (' ||coalesce( product_qty_type,'unit') || ')'
+FROM product;
 
 
 --Windowed Functions
@@ -29,17 +30,35 @@ You can either display all rows in the customer_purchases table, with the counte
 each new market date for each customer, or select only the unique market dates per customer 
 (without purchase details) and number those visits. 
 HINT: One of these approaches uses ROW_NUMBER() and one uses DENSE_RANK(). */
-
+SELECT cp.market_date, c.customer_first_name, c.customer_last_name
+	,row_number() over (PARTITION by cp.customer_id ORDER by strftime('%Y-%m-%d',cp.market_date) ASC) as 'visit_num'
+FROM customer_purchases cp
+JOIN customer c
+	on cp.customer_id = c.customer_id;
 
 /* 2. Reverse the numbering of the query from a part so each customer’s most recent visit is labeled 1, 
 then write another query that uses this one as a subquery (or temp table) and filters the results to 
 only the customer’s most recent visit. */
+SELECT x.market_date
+	,c.customer_last_name
+	,c.customer_first_name
+FROM (
+	SELECT customer_id
+		,market_date
+		,row_number() over (PARTITION by customer_id ORDER by strftime('%Y-%m-%d', market_date) ASC) as 'visit_num'
+	FROM customer_purchases 
+	) x
+JOIN customer c
+	on x.customer_id = c.customer_id
+WHERE x.visit_num = 1;
 
 
 /* 3. Using a COUNT() window function, include a value along with each row of the 
 customer_purchases table that indicates how many different times that customer has purchased that product_id. */
-
-
+SELECT DISTINCT customer_id
+	,product_id
+	,count( product_id) over (PARTITION by customer_id, product_id)
+FROM customer_purchases;
 
 
 -- String manipulations
@@ -69,7 +88,4 @@ HINT: There are a possibly a few ways to do this query, but if you're struggling
 "best day" and "worst day"; 
 3) Query the second temp table twice, once for the best day, once for the worst day, 
 with a UNION binding them. */
-
-
-
 
