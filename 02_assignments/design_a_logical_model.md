@@ -15,7 +15,7 @@ _Hint, search type 1 vs type 2 slowly changing dimensions._
 
 Bonus: Are there privacy implications to this, why or why not?
 ```
-(type 1) The table is includes a customer_id column, and ensures such id exists within the customer table. 
+(type 1) The new table includes a customer_id column, and ensures such id exists within the customer table. 
 
 (type 2) Alter cutomer table by adding a address column (I included an address within customer table from the start).
 ```
