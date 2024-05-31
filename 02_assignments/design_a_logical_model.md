@@ -15,7 +15,9 @@ _Hint, search type 1 vs type 2 slowly changing dimensions._
 
 Bonus: Are there privacy implications to this, why or why not?
 ```
-Your answer...
+(type 1) The table is includes a customer_id column, and ensures such id exists within the customer table. 
+
+(type 2) Alter cutomer table by adding a address column (I included an address within customer table from the start).
 ```
 
 ## Question 4
@@ -23,7 +25,7 @@ Review the AdventureWorks Schema [here](https://i.stack.imgur.com/LMu4W.gif)
 
 Highlight at least two differences between it and your ERD. Would you change anything in yours?
 ```
-Your answer...
+One would exclude customer address from my customer table and make a stand alone table for customer addresses. I would add a product catergories table and a categories_id to my book table.
 ```
 
 # Criteria

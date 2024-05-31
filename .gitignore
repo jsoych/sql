@@ -1,4 +1,5 @@
 .DS_Store
 .vscode/
 .sqbpro
+02_assignments/compose.yml
 05_sql/compose.yml
